@@ -21,7 +21,13 @@ if FreeCAD is not None:
 
     import Part
     import Mesh
-    import MeshPart
+    meshPart = False
+    try:
+        import MeshPart
+        meshPart = True
+    except ImportError:
+        print('Warning MeshPart not loaded, only Basic meshing available')
+        pass
     from FreeCAD import Base
 
     from sverchok.nodes.solid.mesh_to_solid import ensure_triangles
