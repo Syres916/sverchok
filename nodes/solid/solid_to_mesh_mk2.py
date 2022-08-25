@@ -18,7 +18,13 @@ else:
     from sverchok.utils.sv_bmesh_utils import recalc_normals
     from sverchok.utils.sv_mesh_utils import non_redundant_faces_indices_np as clean
 
-    import MeshPart
+    meshPart = False
+    try:
+        import MeshPart
+        meshPart = True
+    except ImportError:
+        # print('Warning MeshPart not loaded, only Basic meshing available')
+        pass
 
     def is_triangles_only(faces):
         if has_element(faces): return all((len(f) == 3 for f in faces))
@@ -33,14 +39,19 @@ else:
         bl_icon = 'MESH_CUBE'
         sv_icon = 'SV_SOLID_TO_MESH'
         solid_catergory = "Outputs"
-        modes = [
-            ('Basic',    'Basic',    '', 0),
-            ('Standard', 'Standard', '', 1),
-            ('Mefisto',  'Mefisto',  '', 2),
-            # ('NetGen', 'NetGen',   '', 3),
-            ('Trivial',  'Trivial',  '', 10),
-            ('Lenient',  'Lenient',  '', 14)
-        ]
+        if meshPart:
+            modes = [
+                ('Basic',    'Basic',    '', 0),
+                ('Standard', 'Standard', '', 1),
+                ('Mefisto',  'Mefisto',  '', 2),
+                # ('NetGen', 'NetGen',   '', 3),
+                ('Trivial',  'Trivial',  '', 10),
+                ('Lenient',  'Lenient',  '', 14)
+            ]
+        else:
+            modes = [
+                ('Basic',    'Basic',    '', 0)
+            ]
         shape_types = [
             ('Solid', 'Solid', '', 0),
             ('Face', 'Face', '', 1),
