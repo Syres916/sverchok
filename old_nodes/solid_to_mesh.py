@@ -13,8 +13,13 @@ else:
     from sverchok.node_tree import SverchCustomTreeNode
     from sverchok.data_structure import updateNode, match_long_repeat as mlr
 
-    import MeshPart
-
+    meshPart = False
+    try:
+        import MeshPart
+        meshPart = True
+    except ImportError:
+        # print('Warning MeshPart not loaded, only Basic meshing available')
+        pass
 
     class SvSolidToMeshNode(bpy.types.Node, SverchCustomTreeNode):
         """
@@ -29,12 +34,17 @@ else:
 
         replacement_nodes = [('SvSolidToMeshNodeMk2', None, None)]
 
-        modes = [
-            ('Basic', 'Basic', '', 0),
-            ('Standard', 'Standard', '', 1),
-            ('Mefisto', 'Mefisto', '', 2),
-            # ('NetGen', 'NetGen', '', 3),
-        ]
+        if meshPart:
+            modes = [
+                ('Basic', 'Basic', '', 0),
+                ('Standard', 'Standard', '', 1),
+                ('Mefisto', 'Mefisto', '', 2),
+                # ('NetGen', 'NetGen', '', 3),
+            ]
+        else:
+            modes = [
+                ('Basic', 'Basic', '', 0)
+            ]
         def set_sockets(self,context):
             self.update_sockets()
             updateNode(self, context)
