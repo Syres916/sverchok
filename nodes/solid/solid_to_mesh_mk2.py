@@ -50,7 +50,8 @@ else:
             ]
         else:
             modes = [
-                ('Basic',    'Basic',    '', 0)
+                ('Basic',    'Basic',    '', 0),
+                ('Lenient',  'Lenient',  '', 14)
             ]
         shape_types = [
             ('Solid', 'Solid', '', 0),
